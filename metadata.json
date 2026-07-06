@@ -1,0 +1,6 @@
+{
+  "name": "BILLORA",
+  "description": "A professional financial management platform to manage invoices, customers, payments, and reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
