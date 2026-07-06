@@ -8,7 +8,9 @@ import {
   Calendar,
   Filter,
   CheckCircle,
-  Hash
+  Hash,
+  Sparkles,
+  Loader2
 } from 'lucide-react';
 import { Payment, PaymentMethod, Customer, Invoice } from '../types';
 import { Button } from '@/components/ui/button';
@@ -85,6 +87,20 @@ export function PaymentsView({
         }
       }
     }, 1200);
+  };
+
+  const handleConfirmReconcile = (txId: string, tx: any, matchedInvoice: Invoice) => {
+    onRecordPayment({
+      invoiceId: matchedInvoice.id,
+      invoiceNumber: matchedInvoice.invoiceNumber,
+      customerId: matchedInvoice.customerId,
+      customerName: matchedInvoice.customerName,
+      amount: tx.amount,
+      date: tx.date,
+      method: 'Bank Transfer',
+      reference: `RECONCILED_ACH_${txId.toUpperCase()}`,
+      status: 'Cleared'
+    });
   };
 
   // Form states
