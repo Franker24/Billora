@@ -63,7 +63,9 @@ import { AdminLoginView } from './components/AdminLoginView';
 
 export default function App() {
   // Navigation State - default to Home landing page index
-  const [activeTab, setActiveTab] = useState<string>('home');
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem('billora_active_tab') || 'home';
+  });
 
   // Command Palette & Global Shortcut States
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
@@ -136,6 +138,8 @@ export default function App() {
 
   // Reset scroll position of any layout containers when navigating
   useEffect(() => {
+    localStorage.setItem('billora_active_tab', activeTab);
+    
     // Scroll window to top
     window.scrollTo({ top: 0 });
 
@@ -1121,7 +1125,7 @@ export default function App() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsCloudSyncOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-650 hover:from-blue-700 hover:to-indigo-700 text-white text-[11px] font-bold rounded-lg shadow-sm shadow-blue-500/10 cursor-pointer border-0 transition-all hover:scale-102 active:scale-98"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-lg shadow-sm shadow-blue-500/10 cursor-pointer border-0 transition-all hover:scale-102 active:scale-98"
             >
               <Rocket className="size-3.5" />
               Pasar a Producción
