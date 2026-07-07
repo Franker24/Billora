@@ -294,10 +294,11 @@ He recibido tu pregunta: *"${userPrompt}"*.
 
     try {
       let aiText = '';
-      if (geminiApiKey && geminiApiKey.startsWith('AIza')) {
+      const isBlockedKey = geminiApiKey === 'AIzaSyCll78o1SFrwHzqirXlhJotcOgLFX-Gqrc';
+      if (geminiApiKey && geminiApiKey.startsWith('AIza') && !isBlockedKey) {
         aiText = await callGeminiAPI(query);
       } else {
-        // Wait 900ms to simulate response delay
+        // Wait 800ms to simulate response delay
         await new Promise(resolve => setTimeout(resolve, 800));
         aiText = getMockAIResponse(query);
       }
