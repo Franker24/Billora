@@ -35,6 +35,17 @@ export function AIAssistant({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
 
+  const [windowSize, setWindowSize] = useState({ width: 1200, height: 800 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Update welcome message depending on whether the user is on the marketing page or dashboard console
   useEffect(() => {
     const isMarketing = ['home', 'features', 'pricing', 'templates', 'faq', 'contact'].includes(activeTab);
@@ -330,7 +341,12 @@ He recibido tu pregunta: *"${userPrompt}"*.
             dragControls={dragControls}
             dragMomentum={false}
             dragElastic={0}
-            dragConstraints={{ left: -800, right: 50, top: -800, bottom: 50 }}
+            dragConstraints={{ 
+              left: -windowSize.width + (isExpanded ? 640 : 440), 
+              right: 20, 
+              top: -windowSize.height + (isExpanded ? 740 : 540), 
+              bottom: 20 
+            }}
             initial={{ opacity: 0, scale: 0.85, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 30 }}
