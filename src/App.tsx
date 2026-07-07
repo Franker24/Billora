@@ -212,6 +212,10 @@ export default function App() {
 
   // Upgraded Feature States
   const [geminiApiKey, setGeminiApiKey] = useState(() => {
+    const envKey = (import.meta as any).env?.VITE_GEMINI_API_KEY;
+    if (envKey && envKey !== 'MY_GEMINI_API_KEY') {
+      return envKey;
+    }
     return localStorage.getItem('billora_gemini_key') || 'AIzaSyCll78o1SFrwHzqirXlhJotcOgLFX-Gqrc';
   });
 

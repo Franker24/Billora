@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Bot, User, CornerDownLeft, Loader2, AlertCircle, Maximize2, Minimize2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useDragControls } from 'motion/react';
 import { Invoice, Customer, Payment, Expense } from '../types';
 
 interface AIAssistantProps {
@@ -33,6 +33,7 @@ export function AIAssistant({
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const dragControls = useDragControls();
 
   // Update welcome message depending on whether the user is on the marketing page or dashboard console
   useEffect(() => {
@@ -124,7 +125,7 @@ ${expenseBreakdown || 'Sin gastos registrados todavía.'}
 
     try {
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: {
@@ -325,6 +326,8 @@ He recibido tu pregunta: *"${userPrompt}"*.
         {isOpen && (
           <motion.div
             drag
+            dragListener={false}
+            dragControls={dragControls}
             dragMomentum={false}
             dragElastic={0}
             dragConstraints={{ left: -800, right: 50, top: -800, bottom: 50 }}
@@ -337,7 +340,10 @@ He recibido tu pregunta: *"${userPrompt}"*.
             }`}
           >
             {/* Header (Drag handle area) */}
-            <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-sm select-none cursor-grab active:cursor-grabbing">
+            <div 
+              onPointerDown={(e) => dragControls.start(e)}
+              className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-sm select-none cursor-grab active:cursor-grabbing"
+            >
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
                   <Sparkles className="size-4.5 text-blue-200 animate-pulse" />
